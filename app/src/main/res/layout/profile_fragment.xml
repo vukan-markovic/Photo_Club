@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".fragments.ProfileFragment">
+
+    <data>
+
+        <variable
+                name="viewModel"
+                type="vukan.com.photoclub.viewmodels.UserViewModel"/>
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primary_light"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                app:civ_border_color="@color/accent"
+                app:civ_border_width="2dp"
+                app:imageUrl="@{viewModel.user.profilePictureUrl}"
+                tools:src="@android:mipmap/sym_def_app_icon"/>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_username"
+                    style="@style/Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:hint="@string/enter_the_new_username"
+                    android:padding="@dimen/padding"
+                    android:textAlignment="center"
+                    android:text="@{viewModel.user.username}"
+                    app:autoSizeMaxTextSize="100sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform"/>
+
+            <ImageButton
+                    android:id="@+id/update_username"
+                    android:padding="@dimen/padding"
+                    android:layout_gravity="center"
+                    android:background="@color/fui_transparent"
+                    app:srcCompat="@drawable/ic_verified_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/update_username"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/camera_fab"
+                style="@style/Widget.MaterialComponents.FloatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:tint="@color/primary_dark"
+                android:tooltipText="Take a picture!"
+                app:backgroundTint="@color/accent"
+                app:borderWidth="0dp"
+                app:elevation="6dp"
+                app:fabSize="normal"
+                app:pressedTranslationZ="12dp"
+                app:srcCompat="@drawable/ic_add_a_photo"
+                tools:targetApi="o"/>
+
+        <include layout="@layout/profile_content"/>
+
+    </LinearLayout>
+
+</layout>

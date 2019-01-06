@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".Photo">
+
+    <data>
+
+        <variable
+                name="viewModel"
+                type="vukan.com.photoclub.viewmodels.ImageViewModel"/>
+
+        <variable name="mainFragment"
+                  type="vukan.com.photoclub.fragments.MainFragment"/>
+
+        <variable name="profileFragment" type="vukan.com.photoclub.fragments.ProfileFragment" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+            android:focusable="true"
+            android:id="@+id/photo_card"
+            android:onLongClick="@{() -> profileFragment.deleteImage(viewModel)}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:contentPaddingBottom="10dp"
+            android:orientation="vertical"
+            app:cardUseCompatPadding="true"
+            app:contentPaddingTop="10dp"
+            card_view:cardCornerRadius="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image"
+                    android:layout_width="240dp"
+                    android:layout_height="240dp"
+                    android:cropToPadding="false"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{viewModel.image.imageUrl}"
+                    tools:src="@mipmap/ic_launcher"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginRight="8dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/dateTime"
+                    style="@style/Text"
+                    android:layout_width="207dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.getDate(), default=DateTime}"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@+id/image"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/comment_profile_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:imageUrl="@{viewModel.image.profilePictureUrl}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="@{() -> mainFragment.getUser(viewModel)}"
+                    tools:src="@android:mipmap/sym_def_app_icon"
+                    app:layout_constraintVertical_bias="0.03"
+                    app:layout_constraintEnd_toStartOf="@+id/image"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

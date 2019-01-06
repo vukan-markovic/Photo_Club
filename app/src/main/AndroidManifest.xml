@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="vukan.com.photoclub"
+          android:installLocation="preferExternal">
+
+    <!--<dist:module dist:instant="true"/>-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+            android:allowBackup="true"
+            android:appCategory="social"
+            android:fullBackupContent="true"
+            android:icon="@mipmap/ic_launcher"
+            android:isGame="false"
+            android:label="@string/app_name"
+            android:logo="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning"
+            tools:targetApi="o">
+
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="42f6da0659ad547413121ab54c0fc637569faf17"/>
+
+        <meta-data
+                android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+                android:value="ocr,face,label"/>
+
+        <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts"/>
+
+        <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-3940256099942544~3347511713"/>
+
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@android:drawable/sym_action_chat"/>
+
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/primary"/>
+
+        <activity
+                android:name=".MainActivity"
+                android:colorMode="hdr"
+                android:label="@string/app_name"
+                android:resizeableActivity="true"
+                android:rotationAnimation="seamless"
+                android:supportsPictureInPicture="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <!--suppress AndroidElementNotAllowed -->
+            <nav-graph android:value="@navigation/app_navigation"/>
+
+        </activity>
+
+        <receiver android:name=".DeepLinkAppWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/deep_link_appwidget_info"/>
+        </receiver>
+
+    </application>
+
+</manifest>
