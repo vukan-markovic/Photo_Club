@@ -12,7 +12,7 @@
     <item
             android:id="@+id/file"
             android:enabled="true"
-            android:icon="@drawable/ic_file_download"
+            android:icon="@drawable/ic_file"
             android:title="@string/file"
             app:showAsAction="never"/>
 

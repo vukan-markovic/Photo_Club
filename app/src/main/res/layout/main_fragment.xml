@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools">
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <data>
-        <variable name="viewModel" type="vukan.com.photoclub.viewmodels.ImagesViewModel"/>
-    </data>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/images_home"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/primary_light"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="16dp"
+            android:scrollbars="vertical"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll"
+            android:padding="@dimen/padding"
+            tools:context=".fragments.MainFragment"
+            tools:listItem="@layout/image"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/images_home"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/primary_light"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="16dp"
-                android:scrollbars="vertical"
-                android:stackFromBottom="true"
-                android:transcriptMode="alwaysScroll"
-                tools:context=".fragments.MainFragment"
-                tools:listItem="@layout/image"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-</layout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

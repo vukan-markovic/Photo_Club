@@ -1,11 +1,12 @@
 package vukan.com.photoclub.dataclasses
 
-import java.util.*
+import com.google.firebase.Timestamp
 
 data class Image(
-    var dateTime: Date,
+    var dateTime: Timestamp,
     var imageUrl: String,
-    var terms: ArrayList<String>,
+    var terms: List<String>,
     var userID: String,
-    var profilePictureUrl: String
+    var profilePictureUrl: String,
+    var likesCount: Long
 )

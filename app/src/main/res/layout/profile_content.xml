@@ -13,6 +13,7 @@
         tools:targetApi="lollipop">
 
     <androidx.recyclerview.widget.RecyclerView
+            android:padding="@dimen/padding"
             android:id="@+id/user_images"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

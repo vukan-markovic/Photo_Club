@@ -1,31 +1,24 @@
 package vukan.com.photoclub.fragments
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
-import android.view.animation.OvershootInterpolator
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.palette.graphics.Palette
+import com.google.firebase.Timestamp
 import kotlinx.android.synthetic.main.image_details_fragment.*
 import kotlinx.android.synthetic.main.main_activity.*
+import vukan.com.photoclub.FirestoreDatabase
+import vukan.com.photoclub.Presenter
 import vukan.com.photoclub.R
-import vukan.com.photoclub.databinding.ImageDetailsFragmentBinding
-import vukan.com.photoclub.viewmodels.ImageViewModel
 
 class ImageDetailsFragment : Fragment() {
-    private lateinit var mViewModel: ImageViewModel
-    private lateinit var mBinding: ImageDetailsFragmentBinding
-    private val sDecelerator = DecelerateInterpolator()
-    private val sOverShooter = OvershootInterpolator(10f)
+    private var presenter: Presenter = Presenter(this, FirestoreDatabase())
     private lateinit var imageUrl: String
 
     override fun onCreateView(
@@ -33,57 +26,64 @@ class ImageDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.image_details_fragment,
             container,
             false
         )
-        return mBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.window?.decorView?.apply { systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE }
-        mViewModel = ViewModelProviders.of(this).get(ImageViewModel::class.java)
-        mBinding.viewModel = mViewModel
-        mBinding.setLifecycleOwner(this)
-        imageUrl = ImageDetailsFragmentArgs.fromBundle(arguments!!).imageUrl
-        mViewModel.readImage(imageUrl)
-        like.animate().duration = 200
-
-        like.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) v.animate().setInterpolator(sDecelerator).scaleX(.7f).scaleY(.7f)
-            else if (event.action == MotionEvent.ACTION_UP) v.animate().setInterpolator(sOverShooter).scaleX(1f).scaleY(1f)
-            mViewModel.updateImage(imageUrl)
-            false
-        }
+        imageUrl = arguments?.getString("imageUrl").toString()
+        presenter.readImage(imageUrl)
 
         comments.setOnClickListener {
-            ImageDetailsFragmentDirections.imageDetailsFragmentToCommentsFragment(imageUrl)
+            val commentsFragment = CommentsFragment()
+            val bundle = Bundle()
+            bundle.putString("imageUrl", imageUrl)
+            commentsFragment.arguments = bundle
+            fragmentManager?.beginTransaction()?.setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+                ?.replace(vukan.com.photoclub.R.id.host_fragment, commentsFragment)?.addToBackStack(null)?.commit()
         }
 
-        fun createPaletteSync(bitmap: Bitmap): Palette = Palette.from(bitmap).generate()
-
-        val vibrantSwatch = createPaletteSync(
+        val vibrantSwatch = Palette.from(
             MediaStore.Images.Media.getBitmap(
                 context?.contentResolver,
                 Uri.parse(imageUrl)
             )
-        ).vibrantSwatch
+        ).generate().vibrantSwatch
+
         with(toolbar) {
-            setBackgroundColor(
+            this.setBackgroundColor(
                 vibrantSwatch?.rgb ?: ContextCompat.getColor(
                     context,
                     R.color.primary
                 )
             )
-            setTitleTextColor(
+            this.setTitleTextColor(
                 vibrantSwatch?.titleTextColor ?: ContextCompat.getColor(
                     context,
                     R.color.accent
                 )
             )
         }
+    }
+
+    fun getImage(): AppCompatImageView {
+        return image_detail
+    }
+
+    fun setDateTime(dateTime: Timestamp) {
+        image_detail_date_time.text = dateTime.toString()
+    }
+
+    fun setLikesCount(count: Long) {
+        likesCount.text = count.toString()
     }
 }

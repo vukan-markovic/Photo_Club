@@ -1,0 +1,78 @@
+execute {}
+:Executor
+override fun execute(command: Runnable?) {
+    Thread(command).start()
+}
+
+            final StorageReference filepath = mStorage.child("MMemory_images").
+                    child(mImageUri.getLastPathSegment());
+            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    dataToSave.put("image", taskSnapshot.getDownloadUrl().toString());
+                    dataToSave.put("timestamp", String.valueOf(java.lang.System.currentTimeMillis()));
+
+  photoSize = getResources().getDimensionPixelSize(R.dimen.publish_photo_thumbnail_size);
+  private void loadThumbnailPhoto() {
+      ivPhoto.setScaleX(0);
+      ivPhoto.setScaleY(0);
+      Picasso.with(this)
+              .load(photoUri)
+              .centerCrop()
+              .resize(photoSize, photoSize)
+              .into(ivPhoto, new Callback() {
+                  rvFeed.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                          new Handler().postDelayed(new Runnable() {
+                              @Override
+                              public void run() {
+                                  rvFeed.smoothScrollToPosition(0);
+                                  feedAdapter.showLoadingView();
+                              }
+                          }, 500);
+                      }
+
+storage.metadata.addOnSuccessListener {}
+
+<ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:visibility="gone"
+
+                      public Bitmap loadSampledResource(int imageID, int targetHeight, int targetWidth) {
+                          final BitmapFactory.Options options = new BitmapFactory.Options();
+                          options.inJustDecodeBounds = true;
+                          BitmapFactory.decodeResource(getResources(), imageID, options);
+                          final int originalHeight = options.outHeight;
+                          final int originalWidth = options.outWidth;
+                          int inSampleSize = 1;
+                          while ((originalHeight / (inSampleSize *2)) > targetHeight &&
+                                  (originalWidth / (inSampleSize *2)) > targetWidth) {
+                              inSampleSize *= 2;
+                          }
+                          options.inSampleSize =inSampleSize;
+                          options.inJustDecodeBounds = false;
+                          return (BitmapFactory.decodeResource(getResources(), imageID, options));
+                      }
+
+private AdapterDataObserver observer = new AdapterDataObserver() {
+ @Override
+    public void setAdapter(Adapter adapter) {
+        super.setAdapter(adapter);
+        if (adapter != null) {
+            adapter.registerAdapterDataObserver(observer);
+            observer.onChanged();
+        }
+    }
+
+getSupportActionBar().setDisplayShowTitleEnabled(false);
+(InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE).hideSoftInputFromWindow(et.getWindowToken(), 0);
+java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
+String formattedDate = dateFormat.format(new Date(Long.valueOf(memory.getTimestamp())).getTime());
+holder.timestamp.setText(formattedDate);
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatString);
+simpleDateFormat.format(dateToFormat);
+actionBar.setTitle(R.string.action_settings);
+actionBar.setDisplayHomeAsUpEnabled(true);
+actionBar.setDisplayShowHomeEnabled(true);
+llm.setReverseLayout(true);
+llm.setStackFromEnd(true);
+commentView.getAdapter().notifyItemRangeInserted(0, commentView.getAdapter().itemCount)

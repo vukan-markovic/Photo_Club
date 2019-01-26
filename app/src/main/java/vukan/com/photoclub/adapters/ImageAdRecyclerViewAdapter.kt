@@ -1,55 +1,53 @@
 package vukan.com.photoclub.adapters
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.library.baseAdapters.BR
+import android.widget.PopupMenu
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatRatingBar
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.image.view.*
 import kotlinx.android.synthetic.main.native_ad.view.*
+import vukan.com.photoclub.Presenter
 import vukan.com.photoclub.R
-import vukan.com.photoclub.databinding.ImageBinding
 import vukan.com.photoclub.dataclasses.Image
-import vukan.com.photoclub.viewmodels.ImageViewModel
+import vukan.com.photoclub.fragments.ImageDetailsFragment
+import vukan.com.photoclub.fragments.ProfileFragment
 
-class ImageAdRecyclerViewAdapter(
-    private var list: ArrayList<Any>,
-    listener: ItemClickListener,
-    var fragment: Fragment
-) : PagedListAdapter<Image, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
-    private var itemClickListener: ItemClickListener = listener
-    private var viewModel: ImageViewModel = ViewModelProviders.of(fragment).get(ImageViewModel::class.java)
+class ImageAdRecyclerViewAdapter(var imagesAds: List<Any>, var presenter: Presenter, var fragment: Fragment) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private val image = 0
     private val ad = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
+        return when (viewType) {
             ad -> {
-                val unifiedNativeLayoutView = LayoutInflater.from(
-                    parent.context
-                ).inflate(
-                    R.layout.native_ad,
-                    parent, false
+                UnifiedNativeAdViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        vukan.com.photoclub.R.layout.native_ad,
+                        parent,
+                        false
+                    )
                 )
-                return UnifiedNativeAdViewHolder(unifiedNativeLayoutView)
             }
             else -> {
-                return ImageViewHolder(
-                    DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.image,
-                        parent, false
+                ImageViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        vukan.com.photoclub.R.layout.image,
+                        parent,
+                        false
                     )
                 )
             }
@@ -57,111 +55,151 @@ class ImageAdRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val viewType = getItemViewType(position)
-        when (viewType) {
+        when (getItemViewType(position)) {
             ad -> {
-                val nativeAd = list[position] as UnifiedNativeAd
-                populateNativeAdView(nativeAd, (holder as UnifiedNativeAdViewHolder).adView)
+                populateNativeAdView(
+                    imagesAds[position] as UnifiedNativeAd,
+                    (holder as UnifiedNativeAdViewHolder).adView
+                )
             }
             else -> {
                 val imageHolder = holder as ImageViewHolder
-                imageHolder.binding.viewModel = viewModel
-                imageHolder.binding.setVariable(BR.viewModel, image)
-                imageHolder.binding.executePendingBindings()
+                val image: Image = imagesAds[position] as Image
+                Glide.with(imageHolder.view.image_profile_picture.context).asDrawable().load(image.profilePictureUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade()).into(imageHolder.view.image_profile_picture)
+                Glide.with(imageHolder.view.image.context).asDrawable().load(image.imageUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade()).into(holder.view.image)
             }
         }
     }
 
-    inner class ImageViewHolder(var binding: ImageBinding) : RecyclerView.ViewHolder(binding.root),
-        View.OnClickListener {
+    inner class ImageViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
+        init {
+            val image: Image = imagesAds[adapterPosition] as Image
 
-        override fun onClick(v: View?) {
-            itemClickListener.onItemClick(viewModel.image.value?.imageUrl!!)
+            view.image.setOnClickListener {
+                val imageDetailsFragment = ImageDetailsFragment()
+                val bundle = Bundle()
+                bundle.putString("imageUrl", image.imageUrl)
+                imageDetailsFragment.arguments = bundle
+                fragment.fragmentManager?.beginTransaction()?.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+                    ?.replace(vukan.com.photoclub.R.id.host_fragment, imageDetailsFragment)
+                    ?.addToBackStack(null)?.commit()
+            }
+
+            view.image_profile_picture.setOnClickListener {
+                val profileFragment = ProfileFragment()
+                val bundle = Bundle()
+                bundle.putString("userID", image.userID)
+                profileFragment.arguments = bundle
+                fragment.fragmentManager?.beginTransaction()?.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+                    ?.replace(vukan.com.photoclub.R.id.host_fragment, profileFragment)
+                    ?.addToBackStack(null)?.commit()
+            }
+
+            view.setOnLongClickListener {
+                val popupMenu = PopupMenu(it.context, it)
+                popupMenu.inflate(vukan.com.photoclub.R.menu.menu_image)
+                popupMenu.setOnMenuItemClickListener { item ->
+                    if (item.itemId == vukan.com.photoclub.R.id.delete_image) {
+                        presenter.deleteImage(image.imageUrl)
+                        Snackbar.make(it, "Image deleted!", Snackbar.LENGTH_SHORT).show()
+                        notifyItemRemoved(adapterPosition)
+                    } else if (item.itemId == vukan.com.photoclub.R.id.download_image) {
+                        presenter.downloadImage(image.imageUrl)
+                        Snackbar.make(it, "Image downloaded!", Snackbar.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+
+                Runnable {
+                    popupMenu.show()
+                }
+
+                true
+            }
+
+            view.like.setOnClickListener {
+                it.animate().start()
+                presenter.updateImage(image.imageUrl)
+                notifyItemChanged(adapterPosition)
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        val recyclerViewItem = list[position]
-        return if (recyclerViewItem is UnifiedNativeAd) {
-            ad
-        } else image
+        return if (imagesAds[position] is UnifiedNativeAd) ad else image
     }
 
-    interface ItemClickListener {
-        fun onItemClick(imageUrl: String)
+    override fun getItemCount(): Int {
+        return imagesAds.size
     }
 
     private fun populateNativeAdView(
         nativeAd: UnifiedNativeAd,
         adView: UnifiedNativeAdView
     ) {
-        (adView.headlineView as TextView).text = nativeAd.headline
-        (adView.bodyView as TextView).text = nativeAd.body
-        (adView.callToActionView as Button).text = nativeAd.callToAction
-        val icon = nativeAd.icon
-
-        if (icon == null) adView.iconView.visibility = View.INVISIBLE
+        (adView.headlineView as AppCompatTextView).text = nativeAd.headline
+        (adView.bodyView as AppCompatTextView).text = nativeAd.body
+        (adView.callToActionView as MaterialButton).text = nativeAd.callToAction
+        if (nativeAd.icon == null) adView.iconView.visibility = View.INVISIBLE
         else {
-            (adView.iconView as ImageView).setImageDrawable(icon.drawable)
+            (adView.iconView as AppCompatImageView).setImageDrawable(nativeAd.icon.drawable)
             adView.iconView.visibility = View.VISIBLE
         }
 
         if (nativeAd.price == null) adView.priceView.visibility = View.INVISIBLE
         else {
             adView.priceView.visibility = View.VISIBLE
-            (adView.priceView as TextView).text = nativeAd.price
+            (adView.priceView as AppCompatTextView).text = nativeAd.price
         }
 
         if (nativeAd.store == null) adView.storeView.visibility = View.INVISIBLE
         else {
             adView.storeView.visibility = View.VISIBLE
-            (adView.storeView as TextView).text = nativeAd.store
+            (adView.storeView as AppCompatTextView).text = nativeAd.store
         }
 
         if (nativeAd.starRating == null) adView.starRatingView.visibility = View.INVISIBLE
         else {
-            (adView.starRatingView as RatingBar).rating = nativeAd.starRating!!.toFloat()
+            (adView.starRatingView as AppCompatRatingBar).rating = nativeAd.starRating!!.toFloat()
             adView.starRatingView.visibility = View.VISIBLE
         }
 
         if (nativeAd.advertiser == null) adView.advertiserView.visibility = View.INVISIBLE
         else {
-            (adView.advertiserView as TextView).text = nativeAd.advertiser
+            (adView.advertiserView as AppCompatTextView).text = nativeAd.advertiser
             adView.advertiserView.visibility = View.VISIBLE
         }
         adView.setNativeAd(nativeAd)
     }
 
-    inner class UnifiedNativeAdViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
+    class UnifiedNativeAdViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val adView: UnifiedNativeAdView = view.ad_view as UnifiedNativeAdView
 
         init {
-            adView.mediaView = adView.ad_media as MediaView
-            adView.headlineView = adView.ad_headline
-            adView.bodyView = adView.ad_body
-            adView.callToActionView = adView.ad_call_to_action
-            adView.iconView = adView.ad_icon
-            adView.priceView = adView.ad_price
-            adView.starRatingView = adView.ad_stars
-            adView.storeView = adView.ad_store
-            adView.advertiserView = adView.ad_advertiser
-        }
-    }
+            with(adView) {
+                this.mediaView = adView.ad_media as MediaView
+                this.headlineView = adView.ad_headline
+                this.bodyView = adView.ad_body
+                this.callToActionView = adView.ad_call_to_action
+                this.iconView = adView.ad_icon
+                this.priceView = adView.ad_price
+                this.starRatingView = adView.ad_stars
+                this.storeView = adView.ad_store
+                this.advertiserView = adView.ad_advertiser
+            }
 
-    companion object {
-        private val DIFF_CALLBACK = object :
-            DiffUtil.ItemCallback<Image>() {
-            override fun areItemsTheSame(
-                oldImage: Image,
-                newImage: Image
-            ): Boolean =
-                oldImage.imageUrl == newImage.imageUrl
-
-            override fun areContentsTheSame(
-                oldImage: Image,
-                newImage: Image
-            ): Boolean =
-                oldImage == newImage
         }
     }
 }

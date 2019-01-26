@@ -15,13 +15,14 @@
         app:cardUseCompatPadding="true"
         app:contentPaddingTop="10dp"
         card_view:cardCornerRadius="4dp">
+
     <com.google.android.gms.ads.formats.UnifiedNativeAdView
             android:id="@+id/ad_view"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -29,8 +30,7 @@
                 android:minHeight="50dp"
                 android:orientation="vertical">
 
-            <TextView
-                    android:id="@+id/ad_attribution"
+            <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -41,20 +41,20 @@
                     android:width="15dp"
                     android:height="15dp"/>
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
                     android:paddingTop="3dp">
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ad_icon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
@@ -64,12 +64,12 @@
                             android:paddingEnd="5dp"
                             android:contentDescription="@string/adimage"/>
 
-                    <LinearLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/ad_headline"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -77,11 +77,11 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold"/>
 
-                        <LinearLayout
+                        <androidx.appcompat.widget.LinearLayoutCompat
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/ad_advertiser"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
@@ -89,7 +89,7 @@
                                     android:textSize="14sp"
                                     android:textStyle="bold"/>
 
-                            <RatingBar
+                            <androidx.appcompat.widget.AppCompatRatingBar
                                     android:id="@+id/ad_stars"
                                     style="?android:attr/ratingBarStyleSmall"
                                     android:layout_width="wrap_content"
@@ -97,17 +97,19 @@
                                     android:isIndicator="true"
                                     android:numStars="5"
                                     android:stepSize="0.5"/>
-                        </LinearLayout>
 
-                    </LinearLayout>
-                </LinearLayout>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <LinearLayout
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/ad_body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -122,7 +124,7 @@
                             android:layout_height="175dp"
                             android:layout_marginTop="5dp"/>
 
-                    <LinearLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -130,7 +132,7 @@
                             android:paddingBottom="10dp"
                             android:paddingTop="10dp">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/ad_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -140,7 +142,7 @@
                                 android:paddingEnd="5dp"
                                 android:textSize="12sp"/>
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/ad_store"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -150,17 +152,21 @@
                                 android:paddingEnd="5dp"
                                 android:textSize="12sp"/>
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                                 android:id="@+id/ad_call_to_action"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:textSize="12sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </com.google.android.gms.ads.formats.UnifiedNativeAdView>
-</com.google.android.material.card.MaterialCardView>
 
+</com.google.android.material.card.MaterialCardView>

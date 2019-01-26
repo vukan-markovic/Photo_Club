@@ -1,45 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PhotoClub</string>
+    <string name="app_name">Photo Club</string>
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_activity_profile">ProfileActivity</string>
-    <string name="action_settings">Settings</string>
     <string name="explore">Explore</string>
-    <string name="title_activity_photo_details">PhotoDetailsActivity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_image_details">ImageDetailsActivity</string>
-    <string name="large_text">1TVJ9SLQEQ7G</string>
-    <string name="title">Title</string>
     <string name="photo">photo</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="like">like</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="navigation_drawer_open">open</string>
-    <string name="navigation_drawer_close">close</string>
     <string name="enter_the_new_username">Enter the new username</string>
     <string name="enter_the_comment">Enter the comment</string>
-    <string name="follow">follow</string>
     <string name="invite_friends">Invite friends</string>
     <string name="share">Share</string>
     <string name="sign_out">Sign out</string>
     <string name="delete_profile">Delete profile</string>
+    <string name="camera">Camera</string>
+    <string name="file">File</string>
+    <string name="delete_comment">Delete comment</string>
+    <string name="ad">Ad</string>
+    <string name="adimage">AdImage</string>
+    <string name="update_comment">Update comment</string>
+    <string name="update_username">Update username</string>
+    <string name="search_for_images">Search for images</string>
+    <string name="delete_image">Delete image</string>
+    <string name="download_image">Download image</string>
     <string name="invitation_deep_link" translatable="false">https://vukan.page.link/photoclub</string>
+    <string name="invite_image_url" translatable="false">
+        https://static.dezeen.com/uploads/2018/06/Instagram-design-guide_dezeen_2364_col_0-852x479.jpg
+    </string>
     <string name="facebook_application_id" translatable="false">524932501252478</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb524932501252478</string>
     <string name="twitter_consumer_key" translatable="false">vHSvA1rWKIdavfkEMzyU6boLZ</string>
     <string name="twitter_consumer_secret" translatable="false">5wxgwaWdyaNcXHPXCH7pJdpT4hN0ALhPFu6vuEZwSnoFfPlq23
     </string>
-    <string name="camera">Camera</string>
-    <string name="file">File</string>
-    <string name="delete_notification">Delete notification</string>
-    <string name="delete_comment">Delete comment</string>
-    <string name="ad">Ad</string>
-    <string name="adimage">AdImage</string>
-    <string name="invite_image_url">
-        https://static.dezeen.com/uploads/2018/06/Instagram-design-guide_dezeen_2364_col_0-852x479.jpg
-    </string>
-    <string name="update_comment">Update comment</string>
-    <string name="update_username">Update username</string>
 </resources>
