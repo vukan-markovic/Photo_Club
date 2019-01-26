@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "824962710079",
+    "firebase_url": "https://photo-club-78685.firebaseio.com",
+    "project_id": "photo-club-78685",
+    "storage_bucket": "photo-club-78685.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824962710079:android:37355c51ae4cfceb",
+        "android_client_info": {
+          "package_name": "vukan.com.photoclub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824962710079-9etkc46vf9s8cljsre2gijdl8o0l88ed.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vukan.com.photoclub",
+            "certificate_hash": "592c9dc4c3c860a010e4b41af878e325067fcdd2"
+          }
+        },
+        {
+          "client_id": "824962710079-rf1r6b065lauhr3imo8a0ud5baibfeqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmN5konCUARBFibQqTt7NK89iAOQmZSbI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824962710079-rf1r6b065lauhr3imo8a0ud5baibfeqi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+
+        <item
+                android:id="@+id/invite"
+                android:enabled="true"
+                android:icon="@drawable/invitation"
+                android:title="@string/invite_friends"
+                app:showAsAction="never"/>
+
+        <item
+                android:id="@+id/share"
+                android:enabled="true"
+                android:icon="@drawable/ic_share"
+                android:title="@string/share"
+                app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
+                app:showAsAction="never"/>
+
+        <item
+                android:id="@+id/sign_out"
+                android:enabled="true"
+                android:icon="@drawable/sign_out"
+                android:title="@string/sign_out"
+                app:showAsAction="never"/>
+
+        <item
+                android:id="@+id/delete"
+                android:enabled="true"
+                android:icon="@drawable/ic_delete"
+                android:title="@string/delete_profile"
+                app:showAsAction="never"/>
+
+    </group>
+
+</menu>
