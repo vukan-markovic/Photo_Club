@@ -25,9 +25,5 @@
     <string name="invite_image_url" translatable="false">
         https://static.dezeen.com/uploads/2018/06/Instagram-design-guide_dezeen_2364_col_0-852x479.jpg
     </string>
-    <string name="facebook_application_id" translatable="false">524932501252478</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fb524932501252478</string>
-    <string name="twitter_consumer_key" translatable="false">vHSvA1rWKIdavfkEMzyU6boLZ</string>
-    <string name="twitter_consumer_secret" translatable="false">5wxgwaWdyaNcXHPXCH7pJdpT4hN0ALhPFu6vuEZwSnoFfPlq23
     </string>
 </resources>
