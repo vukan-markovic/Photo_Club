@@ -1,45 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Photo Club</string>
+    <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
+    <string name="explore">Explore</string>
+    <string name="photo">photo</string>
     <string name="enter_the_new_username">Enter the new username</string>
     <string name="enter_the_comment">Enter the comment</string>
+    <string name="invite_friends">Invite friends</string>
     <string name="share">Share</string>
     <string name="sign_out">Sign out</string>
     <string name="delete_profile">Delete profile</string>
     <string name="camera">Camera</string>
     <string name="file">File</string>
     <string name="delete_comment">Delete comment</string>
+    <string name="ad">Ad</string>
+    <string name="adimage">AdImage</string>
+    <string name="update_comment">Update comment</string>
+    <string name="update_username">Update username</string>
+    <string name="search_for_images">Search for images</string>
     <string name="delete_image">Delete image</string>
     <string name="download_image">Download image</string>
-    <string name="user">User</string>
-    <string name="deleted_comment">Comment deleted!</string>
-    <string name="image_deleted">Image deleted!</string>
-    <string name="image_downloaded">Image downloaded!</string>
-    <string name="comment_added">Added comment!</string>
-    <string name="sign_in">Signed in</string>
-    <string name="choose_picture">Choose picture</string>
-    <string name="image_added">New image added!</string>
-    <string name="profile_picture_updated">Profile picture updated!</string>
-    <string name="dialog_title">Delete profile</string>
-    <string name="dialog_message">Are you sure that you want to delete profile?</string>
-    <string name="share_image">Share image</string>
-    <string name="add_image_to_gallery">Add image to gallery</string>
-    <string name="share_message">Come and share your photos with friends at
-        PhotoClub! :D
+    <string name="invitation_deep_link" translatable="false">https://vukan.page.link/photoclub</string>
+    <string name="invite_image_url" translatable="false">
+        https://static.dezeen.com/uploads/2018/06/Instagram-design-guide_dezeen_2364_col_0-852x479.jpg
     </string>
-    <string name="profile_deleted">Profile deleted!</string>
-    <string name="signed_out">Signed out!</string>
-    <string name="profile">Profile</string>
-    <string name="image">Image</string>
-    <string name="comments">Comments</string>
-    <string name="facebook_application_id" translatable="false">524932501252478</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fb524932501252478</string>
-    <string name="twitter_consumer_key" translatable="false">vHSvA1rWKIdavfkEMzyU6boLZ</string>
-    <string name="twitter_consumer_secret" translatable="false">5wxgwaWdyaNcXHPXCH7pJdpT4hN0ALhPFu6vuEZwSnoFfPlq23
     </string>
-    <string name="default_profile_picture" translatable="false">
-        https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1-744x744.jpg
-    </string>
-    <string name="off">off</string>
 </resources>
