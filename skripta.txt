@@ -1,35 +1,216 @@
-execute {}
-:Executor
-override fun execute(command: Runnable?) {
-    Thread(command).start()
+db.collection("cities").document("BJ")
+        .set(data, SetOptions.merge())
+
+if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                 resultUri = result.getUri();
+                profilePic.setImageURI(resultUri);
+            }
+CropImage.activity(mImageUri)
+                    .setAspectRatio(1,1)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
+
+
+imagePath.putFile(resultUri)
+StorageReference imagePath = mFirebaseStorage.child("MMemory_Profile_Pics").child(resultUri.getLastPathSegment());
+imageView.setImageBitmap(BitmapFactory.decodeFile(mLastPhotoURI.getPath()));
+
+Glide.with(this).load(fullImageUrl)
+       .transition(DrawableTransitionOptions.withCrossFade())
+       .thumbnail(Glide.with(this)
+            .load(fastLoadUrl)
+            .apply(requestOption))
+       .apply(requestOption)
+       .into(my_image_view)
+
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function prefix() {
+      return /databases/{db}/documents;
+    }
+    match /chatroom/{roomId} {
+      allow read, write: if roomId in get(/$(prefix())/users/$(request.auth.uid)).data.chats
+                            || exists(/$(prefix())/admins/$(request.auth.uid));
+    }
+    match /users/{userId} {
+      allow read, write: if userId == request.auth.uid
+                            || exists(/$(prefix())/admins/$(request.auth.uid));
+    }
+    match /admins/{userId} {
+      allow read, write: if exists(/$(prefix())/admins/$(request.auth.uid));
+    }
+  }
 }
 
-            final StorageReference filepath = mStorage.child("MMemory_images").
-                    child(mImageUri.getLastPathSegment());
-            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    dataToSave.put("image", taskSnapshot.getDownloadUrl().toString());
-                    dataToSave.put("timestamp", String.valueOf(java.lang.System.currentTimeMillis()));
+// Source can be CACHE, SERVER, or DEFAULT.
+val source = Source.CACHE
+// Get the document, forcing the SDK to use the offline cache
+docRef.get(source).addOnCompleteListener { task ->
+    if (task.isSuccessful) {
+        val document = task.result!!
+        Log.d(TAG, "Cached document data: " + document.data)
+    }
 
-  photoSize = getResources().getDimensionPixelSize(R.dimen.publish_photo_thumbnail_size);
-  private void loadThumbnailPhoto() {
-      ivPhoto.setScaleX(0);
-      ivPhoto.setScaleY(0);
-      Picasso.with(this)
-              .load(photoUri)
-              .centerCrop()
-              .resize(photoSize, photoSize)
-              .into(ivPhoto, new Callback() {
-                  rvFeed.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                          new Handler().postDelayed(new Runnable() {
-                              @Override
-                              public void run() {
-                                  rvFeed.smoothScrollToPosition(0);
-                                  feedAdapter.showLoadingView();
-                              }
-                          }, 500);
-                      }
+
+            val cities = ArrayList<String>()
+                        for (doc in value!!) {
+                            if (doc.get("name") != null) {
+                                cities.add(doc.getString("name")!!)
+                            }
+                        }
+        })
+
+// Construct query for first 25 cities, ordered by population
+val first = db.collection("cities")
+        .orderBy("population")
+        .limit(25)
+
+first.get()
+        .addOnSuccessListener { documentSnapshots ->
+            val lastVisible = documentSnapshots.documents[documentSnapshots.size() - 1]
+            val next = db.collection("cities")
+                    .orderBy("population")
+                    .startAfter(lastVisible)
+                    .limit(25)
+        }
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Make sure all cities have a positive population and
+    // the name is not changed
+    match /cities/{city} {
+      allow update: if request.resource.data.population > 0
+                    && request.resource.data.name == resource.data.name;
+    }
+  }
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow only authenticated content owners access
+    match /some_collection/{document} {
+      allow read, write: if request.auth.uid == request.resource.data.author_uid
+    }
+  }
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /stories/{storyid} {
+      // Only the authenticated user who authored the document can read or write
+      allow read, write: if request.auth.uid == resource.data.author;
+    }
+  }
+}
+
+db.collection("stories").where("author", "==", user.uid).get()
+allow list: if request.query.limit <= 10;
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /cities/{city} {
+      // Make sure a 'users' document exists for the requesting user before
+      // allowing any writes to the 'cities' collection
+      allow create: if exists(/databases/$(database)/documents/users/$(request.auth.uid))
+
+      // Allow the user to delete cities if their user document has the
+      // 'admin' field set to 'true'
+      allow delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true
+    }
+  }
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // A read rule can be divided into get and list rules
+    match /cities/{city} {
+      // Applies to single document read requests
+      allow get: if <condition>;
+
+      // Applies to queries and collection read requests
+      allow list: if <condition>;
+    }
+
+    // A write rule can be divided into create, update, and delete rules
+    match /cities/{city} {
+      // Applies to writes to nonexistent documents
+      allow create: if <condition>;
+
+      // Applies to writes to existing documents
+      allow update: if <condition>;
+
+      // Applies to delete operations
+      allow delete: if <condition>;
+    }
+  }
+}
+
+db.disableNetwork().addOnCompleteListener {}
+val myImage: Drawable = ResourcesCompat.getDrawable(mContext.resources, R.drawable.my_image, null)
+
+// set the ImageView bounds to match the Drawable's dimensions
+adjustViewBounds = true
+layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+
+match /{imageId} {
+       allow write: if request.resource.size < 5 * 1024 * 1024
+                    && request.resource.contentType.matches('image/.*')
+                    && request.resource.contentType == resource.contentType
+                    && imageId.size() < 32
+     }
+
+match /{groupId}/{imageId} {
+        allow read: if resource.metadata.owner == request.auth.token.groupId;
+        allow write: if request.auth.token.groupId == groupId;
+      }
+
+forestRef.metadata.addOnSuccessListener {}
+forestRef.updateMetadata(metadata).addOnSuccessListener {}
+
+GlideApp.with(this)
+        .load(storageReference)
+        .into(imageView)
+
+uploadTask.addOnProgressListener { taskSnapshot ->
+    val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+    System.out.println("Upload is $progress% done")
+}.addOnPausedListener {
+System.out.println("Upload is paused")
+}
+}.addOnFailureListener {
+}.addOnSuccessListener {}
+uploadTask.pause()
+uploadTask.resume()
+uploadTask.cancel()
+
+android {
+    defaultConfig {
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86'
+        }
+    }
+}
+
+private fun setPic() {
+    val targetW: Int = mImageView.width
+    val targetH: Int = mImageView.height
+    val bmOptions = BitmapFactory.Options().apply {
+        inJustDecodeBounds = true
+        BitmapFactory.decodeFile(mCurrentPhotoPath, this)
+        val photoW: Int = outWidth
+        val photoH: Int = outHeight
+        val scaleFactor: Int = Math.min(photoW / targetW, photoH / targetH)
+        inJustDecodeBounds = false
+        inSampleSize = scaleFactor
+        inPurgeable = true
+    }
+    BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions)?.also { bitmap ->
+        mImageView.setImageBitmap(bitmap)
+    }
+}
+
 
 storage.metadata.addOnSuccessListener {}
 
@@ -63,16 +244,9 @@ private AdapterDataObserver observer = new AdapterDataObserver() {
         }
     }
 
-getSupportActionBar().setDisplayShowTitleEnabled(false);
 (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE).hideSoftInputFromWindow(et.getWindowToken(), 0);
-java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
-String formattedDate = dateFormat.format(new Date(Long.valueOf(memory.getTimestamp())).getTime());
-holder.timestamp.setText(formattedDate);
-SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatString);
-simpleDateFormat.format(dateToFormat);
-actionBar.setTitle(R.string.action_settings);
-actionBar.setDisplayHomeAsUpEnabled(true);
-actionBar.setDisplayShowHomeEnabled(true);
-llm.setReverseLayout(true);
-llm.setStackFromEnd(true);
-commentView.getAdapter().notifyItemRangeInserted(0, commentView.getAdapter().itemCount)
+
+Intent returnIntent = new Intent();
+returnIntent.putExtra(MainActivity.REQUEST_RESULT, 42);
+setResult(RESULT_OK, returnIntent);
+finish();

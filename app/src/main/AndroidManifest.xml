@@ -4,52 +4,24 @@
           package="vukan.com.photoclub">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-
-    <uses-feature
-            android:name="android.hardware.camera"
-            android:required="false"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+                     android:maxSdkVersion="18"/>
 
     <application
+            android:name="android.support.multidex.MultiDexApplication"
             android:allowBackup="true"
-            android:appCategory="social"
-            android:fullBackupContent="true"
             android:icon="@mipmap/ic_launcher"
-            android:isGame="false"
+            android:supportsRtl="true"
             android:label="@string/app_name"
             android:logo="@mipmap/ic_launcher"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
+            android:roundIcon="@mipmap/ic_launcher"
             android:theme="@style/AppTheme"
-            tools:ignore="GoogleAppIndexingWarning"
-            tools:targetApi="o">
-
-        <meta-data
-                android:name="io.fabric.ApiKey"
-                android:value="42f6da0659ad547413121ab54c0fc637569faf17"/>
-
-        <meta-data
-                android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-                android:value="ocr,face,label"/>
-
-        <meta-data
-                android:name="com.google.android.gms.ads.APPLICATION_ID"
-                android:value="ca-app-pub-3940256099942544~3347511713"/>
-
-        <meta-data
-                android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@android:drawable/sym_action_chat"/>
-
-        <meta-data
-                android:name="com.google.firebase.messaging.default_notification_color"
-                android:resource="@color/primary"/>
+            android:fullBackupContent="true"
+            tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-                android:name=".MainActivity"
-                android:colorMode="hdr"
-                android:label="@string/app_name"
-                android:resizeableActivity="true"
-                android:rotationAnimation="seamless"
-                android:supportsPictureInPicture="true">
+                android:name=".views.MainActivity"
+                android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -57,6 +29,31 @@
             </intent-filter>
 
         </activity>
+
+        <activity android:name=".views.CommentsActivity"
+                  android:screenOrientation="portrait"
+                  android:label="@string/comments"
+                  android:parentActivityName=".views.ImageDetailsActivity"/>
+
+        <activity android:name=".views.ImageDetailsActivity"
+                  android:label="@string/image"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".views.ProfileActivity"
+                  android:screenOrientation="portrait"
+                  android:label="@string/profile"
+                  android:parentActivityName=".views.MainActivity"/>
+
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="vukan.com.photoclub.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths"/>
+        </provider>
 
     </application>
 

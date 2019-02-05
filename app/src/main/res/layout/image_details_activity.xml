@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".views.ImageDetailsActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+            android:layout_above="@+id/bar"
+            android:id="@+id/image_detail"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:layout_margin="@dimen/padding"
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/image"
+            tools:src="@android:mipmap/sym_def_app_icon"/>
+
+    <LinearLayout
+            android:id="@+id/bar"
+            android:background="@color/accent"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/image_detail_date_time"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                tools:text="Date and time"
+                android:padding="@dimen/padding"
+                android:layout_height="wrap_content"
+                tools:ignore="RelativeOverlap"/>
+
+        <TextView
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:id="@+id/likesCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="0"
+                android:textAlignment="center"
+                style="@style/Text"
+                tools:ignore="RelativeOverlap"/>
+
+        <ImageButton
+                android:id="@+id/comments"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="@dimen/padding"
+                app:srcCompat="@drawable/ic_comment"
+                android:contentDescription="@string/comments"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

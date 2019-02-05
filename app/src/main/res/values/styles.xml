@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
-        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">true</item>
-        <item name="android:windowEnterTransition" tools:targetApi="lollipop">@android:transition/slide_right</item>
-        <item name="android:windowExitTransition" tools:targetApi="lollipop">@android:transition/slide_left</item>
         <item name="android:windowBackground">@color/primary_light</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:windowBackgroundFallback" tools:targetApi="n">@color/primary</item>
-        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="p">default</item>
-        <item name="android:windowSharedElementEnterTransition" tools:targetApi="lollipop">
-            @android:transition/slide_right
-        </item>
-        <item name="android:windowSharedElementExitTransition" tools:targetApi="lollipop">
-            @android:transition/slide_left
-        </item>
+        <item name="android:soundEffectsEnabled">true</item>
     </style>
-
     <style name="AuthTheme" parent="FirebaseUI">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -29,10 +16,6 @@
         <item name="colorControlHighlight">@color/primary</item>
         <item name="android:windowBackground">@color/accent</item>
     </style>
-
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
     <style name="Text" parent="TextAppearance.AppCompat">
         <item name="android:autoLink">all</item>
         <item name="fontFamily">@font/walter_turncoat</item>
@@ -49,5 +32,4 @@
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">monospace</item>
     </style>
-
 </resources>

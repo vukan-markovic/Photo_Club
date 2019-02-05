@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".views.ProfileActivity"
+        android:id="@+id/profile_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding"
+            app:civ_border_color="@color/accent"
+            app:civ_border_width="2dp"
+            tools:src="@android:mipmap/sym_def_app_icon"/>
+
+    <EditText
+            android:id="@+id/profile_username"
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_the_new_username"
+            android:autofillHints="@string/enter_the_new_username"
+            tools:targetApi="o"
+            android:inputType="textPersonName"/>
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding"
+            android:layout_marginBottom="@dimen/padding"
+            app:srcCompat="@drawable/ic_add_a_photo"/>
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/user_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+</LinearLayout>
