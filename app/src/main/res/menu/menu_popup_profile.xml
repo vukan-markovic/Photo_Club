@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-            android:id="@+id/camera"
+            android:id="@+id/camera_upload"
             android:enabled="true"
-            android:icon="@drawable/ic_add_a_photo"
             android:title="@string/camera"
             app:showAsAction="never"/>
-
     <item
-            android:id="@+id/file"
+            android:id="@+id/file_upload"
             android:enabled="true"
-            android:icon="@drawable/ic_file"
             android:title="@string/file"
             app:showAsAction="never"/>
-
 </menu>
