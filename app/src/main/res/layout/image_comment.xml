@@ -7,46 +7,44 @@
         android:padding="@dimen/padding"
         android:layout_margin="@dimen/padding"
         android:layout_width="match_parent"
-        android:background="@drawable/recycler_view_selector"
+        android:background="@color/accent"
         android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/comment_profile_picture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             tools:src="@android:mipmap/sym_def_app_icon"
-            app:civ_border_color="@color/accent"
+            app:civ_border_color="@color/primary_dark"
             app:civ_border_width="2dp"/>
 
     <TextView
             android:layout_below="@id/comment_profile_picture"
             android:id="@+id/comment_username"
-            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Text"
             tools:text="Username"/>
 
     <TextView
-            android:id="@+id/comment_date_time"
             style="@style/Text"
+            android:id="@+id/comment_date_time"
             android:layout_width="wrap_content"
             tools:text="Date and time"
             android:layout_height="wrap_content"
-            android:layout_below="@id/comment_profile_picture"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_below="@id/comment_username"/>
 
-    <EditText
+    <TextView
+            android:layout_margin="@dimen/padding"
+            android:layout_toRightOf="@id/comment_profile_picture"
             android:id="@+id/comment_content"
-            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_the_comment"
-            android:textColorHint="@color/primary_dark"
-            android:autofillHints="@string/comments"
-            tools:targetApi="o"
-            android:inputType="textShortMessage"
-            android:layout_centerHorizontal="true"/>
+            style="@style/Text"
+            tools:text="Comment"
+            android:layout_centerHorizontal="true"
+            tools:ignore="Autofill"
+            android:layout_toEndOf="@id/comment_profile_picture"/>
 
 </RelativeLayout>

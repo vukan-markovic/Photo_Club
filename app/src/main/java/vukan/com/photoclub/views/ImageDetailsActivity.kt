@@ -1,13 +1,10 @@
 package vukan.com.photoclub.views
 
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
-import android.media.AudioManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import android.view.SoundEffectConstants
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -20,14 +17,13 @@ class ImageDetailsActivity : AppCompatActivity() {
     private lateinit var mDatabase: Database
     private lateinit var mImageUrl: String
     private lateinit var mAnimation: Animation
-    private lateinit var mAudioManager: AudioManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.image_details_activity)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mAnimation = AnimationUtils.loadAnimation(this, R.anim.fade)
-        mAnimation.duration = 100
-        mAudioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        mAnimation.duration = 125
         mDatabase = Database(this)
 
         if (intent != null && intent.hasExtra("imageUrl")) {
@@ -35,9 +31,8 @@ class ImageDetailsActivity : AppCompatActivity() {
             mDatabase.readImage(mImageUrl)
         }
 
-        comments.setOnClickListener {
+        comments_button.setOnClickListener {
             it.startAnimation(mAnimation)
-            mAudioManager.playSoundEffect(SoundEffectConstants.CLICK)
             val intentComments = Intent(this, CommentsActivity::class.java)
             intentComments.putExtra("imageUrl", mImageUrl)
             startActivity(
@@ -64,9 +59,5 @@ class ImageDetailsActivity : AppCompatActivity() {
 
     fun setDateTime(dateTime: Timestamp) {
         image_detail_date_time.text = dateTime.toDate().toString()
-    }
-
-    fun setLikesCount(count: Long) {
-        likesCount.text = count.toString()
     }
 }

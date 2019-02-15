@@ -13,8 +13,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_picture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:padding="@dimen/padding"
             app:civ_border_color="@color/accent"
             app:civ_border_width="2dp"
@@ -22,13 +22,20 @@
 
     <EditText
             android:id="@+id/profile_username"
-            style="@style/Text"
+            android:fontFamily="@font/walter_turncoat"
+            android:textColor="@color/primary_text"
+            android:textAlignment="center"
+            android:textColorLink="@color/secondary_text"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/text_size"
+            android:textColorHint="@color/primary_dark"
+            android:textStyle="bold"
+            android:typeface="monospace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/enter_the_new_username"
-            android:autofillHints="@string/enter_the_new_username"
-            tools:targetApi="o"
-            android:inputType="textPersonName"/>
+            android:inputType="text"
+            tools:ignore="Autofill"/>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/camera"
@@ -40,6 +47,7 @@
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/user_images"
+            android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
