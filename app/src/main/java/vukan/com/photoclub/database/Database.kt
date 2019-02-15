@@ -1,9 +1,9 @@
 package vukan.com.photoclub.database
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -15,215 +15,135 @@ import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import vukan.com.photoclub.GlideApp
 import vukan.com.photoclub.R
-import vukan.com.photoclub.views.*
 import vukan.com.photoclub.models.Comment
 import vukan.com.photoclub.models.Image
 import vukan.com.photoclub.models.User
-import java.io.File
-import java.util.*
+import vukan.com.photoclub.views.ImageDetailsActivity
+import vukan.com.photoclub.views.ProfileActivity
+import java.io.ByteArrayOutputStream
+import kotlin.random.Random
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class Database(private var view: AppCompatActivity? = null) {
-    private val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var builder: UserProfileChangeRequest.Builder = UserProfileChangeRequest.Builder()
     private var firestore = FirebaseFirestore.getInstance()
     private var storage: StorageReference = FirebaseStorage.getInstance().reference
 
     fun createComment(imageUrl: String, content: String) {
-        if (mUser != null) {
-            val comment =
-                Comment(
-                    System.currentTimeMillis().toString(),
-                    content,
-                    Timestamp.now(),
-                    mUser.photoUrl.toString(),
-                    mUser.uid,
-                    mUser.displayName.toString()
-                )
-            firestore.collection("images").document(Uri.parse(imageUrl).lastPathSegment).collection("comments")
-                .document(comment.commentID)
-                .set(comment, SetOptions.merge())
-                .addOnSuccessListener {
-                    Log.i("FirestoreDatabase", "New comment is added.")
-                }
-                .addOnFailureListener {
-                    Log.i("FirestoreDatabase", it.message)
-                }
-        }
-    }
-
-    fun updateComment(commentID: String, content: String, imageUrl: String) {
-        firestore.collection("images").document(Uri.parse(imageUrl).lastPathSegment).collection("comments")
-            .document(commentID)
-            .update("content", content, "dateTime", Timestamp.now())
-            .addOnSuccessListener {
-                Log.i("FirestoreDatabase", "Comment is updated.")
-            }
-            .addOnFailureListener {
-                Log.i("FirestoreDatabase", it.message)
-            }
-
+        val comment =
+            Comment(
+                System.currentTimeMillis().toString(),
+                content,
+                Timestamp.now(),
+                FirebaseAuth.getInstance().currentUser!!.uid,
+                FirebaseAuth.getInstance().currentUser?.displayName.toString()
+            )
+        firestore.collection("images").document(imageUrl).collection("comments")
+            .document(comment.commentID)
+            .set(comment, SetOptions.merge())
     }
 
     fun deleteComment(commentID: String, imageUrl: String) {
-        firestore.collection("images").document(Uri.parse(imageUrl).lastPathSegment).collection("comments")
+        firestore.collection("images").document(imageUrl).collection("comments")
             .document(commentID).delete()
-            .addOnSuccessListener {
-                Log.i("FirestoreDatabase", "Comment is deleted.")
-            }
-            .addOnFailureListener {
-                Log.i("FirestoreDatabase", it.message)
-            }
     }
 
     fun createImage(imageUrl: Uri) {
-        if (mUser != null) {
-            firestore.collection("images").document(imageUrl.lastPathSegment)
-                .set(
-                    Image(
-                        Timestamp.now(),
-                        imageUrl.toString(),
-                        0L,
-                        mUser.photoUrl.toString(),
-                        mUser.uid
-                    ), SetOptions.merge()
-                )
-                .addOnSuccessListener {
-                    Log.i("FirebaseDatabase", "New image added.")
-                }
-                .addOnFailureListener {
-                    Log.i("FirebaseDatabase", it.message)
-                }
-            storage.child(imageUrl.lastPathSegment).putFile(
-                imageUrl, StorageMetadata.Builder()
-                    .setContentType("image/jpg")
-                    .build()
-            ).addOnSuccessListener {
-                Log.i("FirebaseStorage", "Image added.")
-            }.addOnFailureListener {
-                Log.i("FirebaseStorage", it.message)
-            }
-        }
+        val image = Image(
+            Timestamp.now(),
+            System.currentTimeMillis().toString(),
+            FirebaseAuth.getInstance().currentUser!!.uid
+        )
+
+        firestore.collection("images").document(image.imageUrl)
+            .set(image, SetOptions.merge())
+
+        storage.child(image.imageUrl).putFile(
+            imageUrl, StorageMetadata.Builder()
+                .setContentType("image/jpg").build()
+        )
+    }
+
+    fun createImageBitmap(imageBitmap: Bitmap) {
+        val image = Image(
+            Timestamp.now(),
+            System.currentTimeMillis().toString(),
+            FirebaseAuth.getInstance().currentUser!!.uid
+        )
+
+        firestore.collection("images").document(image.imageUrl)
+            .set(image, SetOptions.merge())
+        val baos = ByteArrayOutputStream()
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        storage.child(image.imageUrl)
+            .putBytes(baos.toByteArray(), StorageMetadata.Builder().setContentType("image/jpg").build())
     }
 
     fun readImage(imageUrl: String) {
-        firestore.collection("images").document(Uri.parse(imageUrl).lastPathSegment).get().addOnSuccessListener {
-            updateUI(it.toObject(Image::class.java))
-            Log.i("FirebaseDatabase", "Image loaded.")
-        }.addOnFailureListener {
-            Log.i("FirebaseDatabase", it.message)
-        }
-    }
-
-    private fun updateUI(image: Image?) {
-        if (image != null) {
-            (view as ImageDetailsActivity).setDateTime(image.dateTime)
-            (view as ImageDetailsActivity).setLikesCount(image.likesCount)
-            GlideApp.with((view as ImageDetailsActivity)).load(storage.child(Uri.parse(image.imageUrl).lastPathSegment))
-                .into((view as ImageDetailsActivity).getImage())
-        }
-    }
-
-    fun updateImage(imageUrl: String, i: Long) {
-        val document = firestore.collection("images").document(Uri.parse(imageUrl).lastPathSegment)
-        firestore.runTransaction {
-            val newLikes = it.get(document).getLong("likesCount")!! + i
-            it.update(document, "likesCount", newLikes)
-            newLikes
-        }.addOnSuccessListener {
-            Log.i("FirebaseDatabase", "New image added.")
-        }.addOnFailureListener {
-            Log.i("FirebaseDatabase", it.message)
+        firestore.collection("images").document(imageUrl).get().addOnSuccessListener {
+            setImage(it.toObject(Image::class.java))
         }
     }
 
     fun deleteImage(imageUrl: String) {
-        firestore.collection("images").document(Uri.parse(imageUrl).lastPathSegment).delete()
-            .addOnSuccessListener {
-                Log.i("FirebaseDatabase", "Image deleted.")
-            }.addOnFailureListener {
-                Log.i("FirebaseDatabase", it.message)
-            }
-
-        storage.child(Uri.parse(imageUrl).lastPathSegment).delete()
-            .addOnSuccessListener {
-                Log.i("FirebaseStorage", "Image deleted.")
-            }.addOnFailureListener {
-                Log.i("FirebaseStorage", it.message)
-            }
+        firestore.collection("images").document(imageUrl).delete()
+        storage.child(imageUrl).delete()
     }
 
-    fun downloadImage(imageUrl: String) {
-        storage.child(Uri.parse(imageUrl).lastPathSegment).getFile(File.createTempFile("images", "jpg"))
-            .addOnSuccessListener {
-                Log.i("FirebaseStorage", "Image downloaded.")
-            }.addOnFailureListener {
-                Log.i("FirebaseStorage", it.message)
-            }
-    }
-
-    fun createUser() {
-        if (mUser != null) {
-            val image = mUser.photoUrl ?: view?.getString(R.string.default_profile_picture)
-            val name: String = mUser.displayName ?: view?.getString(R.string.user) + UUID.randomUUID()
-            val user = User(image.toString(), mUser.uid, name)
-            firestore.collection("users").document(user.userID).set(user, SetOptions.merge())
-        }
+    fun createUser(firebaseUser: FirebaseUser) {
+        val user = User(firebaseUser.uid, firebaseUser.displayName.toString())
+        if (user.username == "null") user.username = "User" + Random(1).nextInt()
+        firestore.collection("users").document(user.userID).set(user, SetOptions.merge())
+        val baos = ByteArrayOutputStream()
+        BitmapFactory.decodeResource(view?.resources, R.drawable.person).compress(Bitmap.CompressFormat.PNG, 100, baos)
+        storage.child(user.userID)
+            .putBytes(baos.toByteArray(), StorageMetadata.Builder().setContentType("image/jpg").build())
     }
 
     fun readUser(userID: String) {
         firestore.collection("users").document(userID).get().addOnSuccessListener {
-            updateUI2(it.toObject(User::class.java))
-            Log.i("FirebaseDatabase", "User loaded.")
-        }.addOnFailureListener {
-            Log.i("FirebaseDatabase", it.message)
-        }
-    }
-
-    private fun updateUI2(user: User?) {
-        if (user != null) {
-            Glide.with((view as ProfileActivity)).load(user.profilePictureUrl)
-                .into((view as ProfileActivity).getProfilePicture())
-            (view as ProfileActivity).setUsername(user.username)
+            setUser(it.toObject(User::class.java))
         }
     }
 
     fun updateProfilePicture(imageUrl: Uri) {
-        builder.setPhotoUri(imageUrl)
-        mUser?.updateProfile(builder.build())?.addOnSuccessListener {
-            Log.i("Update user", "User updated.")
-            firestore.collection("users").document(mUser.uid).update("profilePictureUrl", mUser.photoUrl.toString())
-                .addOnSuccessListener {
-                    Log.i("FirebaseDatabase", "Profile picture updated.")
-                }.addOnFailureListener {
-                    Log.i("FirebaseDatabase", it.message)
-                }
-        }?.addOnFailureListener {
-            Log.i("Update user", it.message)
+        storage.child(FirebaseAuth.getInstance().currentUser!!.uid).delete().addOnSuccessListener {
+            storage.child(FirebaseAuth.getInstance().currentUser!!.uid).putFile(
+                imageUrl, StorageMetadata.Builder()
+                    .setContentType("image/jpg").build()
+            )
+        }
+    }
+
+    fun updateProfilePictureBitmap(imageBitmap: Bitmap) {
+        storage.child(FirebaseAuth.getInstance().currentUser!!.uid).delete().addOnSuccessListener {
+            val baos = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            storage.child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .putBytes(baos.toByteArray(), StorageMetadata.Builder().setContentType("image/jpg").build())
         }
     }
 
     fun updateUsername(username: String) {
         builder.setDisplayName(username)
-        mUser?.updateProfile(builder.build())?.addOnSuccessListener {
-            Log.i("Update user", "User updated.")
-        }?.addOnFailureListener {
-            Log.i("Update user", it.message)
-        }
-        firestore.collection("users").document(mUser!!.uid).update("username", username)
-            .addOnSuccessListener {
-                Log.i("FirebaseDatabase", "Username updated.")
-            }.addOnFailureListener {
-                Log.i("FirebaseDatabase", it.message)
-            }
+        FirebaseAuth.getInstance().currentUser?.updateProfile(builder.build())
+        firestore.collection("users").document(FirebaseAuth.getInstance().currentUser!!.uid)
+            .update("username", username)
     }
 
-    fun deleteUser() {
-        firestore.collection("users").document(mUser!!.uid).delete()
-            .addOnSuccessListener {
-                Log.i("FirebaseDatabase", "User deleted.")
-            }.addOnFailureListener {
-                Log.i("FirebaseDatabase", it.message)
-            }
+    private fun setImage(image: Image?) {
+        if (image != null) {
+            val imageDetailsActivity = view as ImageDetailsActivity
+            imageDetailsActivity.setDateTime(image.dateTime)
+            GlideApp.with(imageDetailsActivity).load(storage.child(image.imageUrl))
+                .into(imageDetailsActivity.getImage())
+        }
+    }
+
+    private fun setUser(user: User?) {
+        val profileActivity = view as ProfileActivity
+        if (user != null) {
+            GlideApp.with(profileActivity).load(storage.child(user.userID)).into(profileActivity.getProfilePicture())
+            profileActivity.setUsername(user.username)
+        }
     }
 }

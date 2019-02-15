@@ -30,27 +30,18 @@
         <TextView
                 android:id="@+id/image_detail_date_time"
                 style="@style/Text"
-                android:layout_width="wrap_content"
-                tools:text="Date and time"
-                android:padding="@dimen/padding"
-                android:layout_height="wrap_content"
-                tools:ignore="RelativeOverlap"/>
-
-        <TextView
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:id="@+id/likesCount"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                tools:text="0"
+                tools:text="Date and time"
+                android:layout_weight="1"
+                android:padding="@dimen/padding"
                 android:textAlignment="center"
-                style="@style/Text"
-                tools:ignore="RelativeOverlap"/>
+                android:layout_height="match_parent"/>
 
         <ImageButton
-                android:id="@+id/comments"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:background="@color/fui_transparent"
+                android:id="@+id/comments_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
                 app:srcCompat="@drawable/ic_comment"
                 android:contentDescription="@string/comments"/>

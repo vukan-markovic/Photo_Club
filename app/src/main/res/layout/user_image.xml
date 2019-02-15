@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
            xmlns:tools="http://schemas.android.com/tools"
-           android:layout_width="70dp"
+           android:layout_width="80dp"
            android:cropToPadding="false"
            android:id="@+id/image_user"
            android:adjustViewBounds="true"
            android:scaleType="centerCrop"
            tools:src="@mipmap/ic_launcher"
            android:layout_margin="@dimen/padding"
-           android:layout_height="70dp"
-           android:contentDescription="@string/image">
-
-</ImageView>
+           android:layout_height="80dp"
+           android:contentDescription="@string/image"/>

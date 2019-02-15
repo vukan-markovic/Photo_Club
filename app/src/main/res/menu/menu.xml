@@ -19,10 +19,4 @@
             android:icon="@drawable/ic_sign_out"
             android:title="@string/sign_out"
             app:showAsAction="ifRoom"/>
-    <item
-            android:id="@+id/delete"
-            android:enabled="true"
-            android:icon="@drawable/ic_delete"
-            android:title="@string/delete_profile"
-            app:showAsAction="ifRoom"/>
 </menu>
