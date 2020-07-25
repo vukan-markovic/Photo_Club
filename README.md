@@ -1,3 +1,3 @@
 # Photo_Club
 
-[Documentation](https://vukan-markovic.github.io/Photo_Club/)
+Android social network application for image sharing
